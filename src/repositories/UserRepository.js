@@ -1,29 +1,44 @@
+const { db, execute, fetchAll, fetchOne } = require("../db")
+
 class UserRepository {
-    create(params) {
-        db.run("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)", params, err => {
-            if (err) throw err
-        })
+    async create(params) {
+        try {
+            await execute(db, "INSERT INTO users (username, password_hash) VALUES (?, ?)", params)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    listAll() {
-        db.all("SELECT * FROM users", (err, rows) => {
-            if (err) throw err
-            else return rows
-        })
+    async listAll() {
+        try {
+            return await fetchAll(db, "SELECT * FROM users")
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    findById(id) {
-        db.get("SELECT * FROM users WHERE id = ?", [id], (err, rows) => {
-            if (err) throw err
-            else return rows
-        })
+    async findById(id) {
+        try {
+            return await fetchOne(db, "SELECT * FROM users WHERE id = ?", [id])
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    deleteById(id) {
-        db.get("DELETE FROM users WHERE id = ?", [id], (err, rows) => {
-            if (err) throw err
-            else return rows
-        })
+    async findByUsername(username) {
+        try {
+            return await fetchOne(db, "SELECT * FROM users WHERE username = ?", [username])
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    async deleteById(id) {
+        try {
+            await execute(db, "DELETE FROM users WHERE id = ?", [id])
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 

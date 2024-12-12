@@ -22,6 +22,12 @@ router.post("/articles", (request, response) => {
     return response.send("criar artigo")
 })
 
-router.post("/users", (request, response) => { userController.create(request, response) })
+router.delete("/articles/:id", (request, response) => {
+    return response.send("deletar artigo")
+})
+
+router.post("/users", async (request, response) => { await userController.create(request, response) })
+
+router.post("/login", async (request, response) => { await userController.login(request, response) })
 
 module.exports = router

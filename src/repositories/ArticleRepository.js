@@ -1,31 +1,36 @@
-const db = require("../db")
+const { db, execute, fetchAll, fetchOne } = require("../db")
 
 class ArticleRepository {
-    create(params) {
-        db.run("INSERT INTO articles (title, content, user_id) VALUES (?, ?, ?)", params, err => {
-            if (err) throw err
-        })
+    async create(params) {
+        try {
+            await execute(db, "INSERT INTO articles (title, content, user_id) VALUES (?, ?. ?)", params)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    listAll() {
-        db.all("SELECT * FROM articles", (err, rows) => {
-            if (err) throw err
-            else return rows
-        })
+    async listAll() {
+        try {
+            return await fetchAll(db, "SELECT * FROM articles")
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    findById(id) {
-        db.get("SELECT * FROM articles WHERE id = ?", [id], (err, rows) => {
-            if (err) throw err
-            else return rows
-        })
+    async findById(id) {
+        try {
+            return await fetchOne(db, "SELECT * FROM articles WHERE id = ?", [id])
+        } catch (err) {
+            console.log(err)
+        }
     }
 
-    deleteById(id) {
-        db.get("DELETE FROM articles WHERE id = ?", [id], (err, rows) => {
-            if (err) throw err
-            else return rows
-        })
+    async deleteById(id) {
+        try {
+            await execute(db, "DELETE FROM articles WHERE id = ?", [id])
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 

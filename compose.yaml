@@ -1,0 +1,10 @@
+services:
+  api:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src/data:/app/src/data
+    environment:
+      - JWT_SECRET=${JWT_SECRET}

@@ -14,6 +14,18 @@ class UserController {
             })
         }
     }
+
+    async login(request, response) {
+        const user = request.body
+        try {
+            const token = await this.userService.login(user)
+            return response.status(200).json({ token })
+        } catch (err) {
+            return response.status(401).json({
+                error: err.message
+            })
+        }
+    }
 }
 
 module.exports = UserController
